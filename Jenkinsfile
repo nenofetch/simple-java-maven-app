@@ -2,19 +2,21 @@ node() {
     docker.image('maven:3.8.1-adoptopenjdk-11').inside {
         git '/home/Documents/Belajar_Implementasi_CICD/Jenkins/simple-java-maven-app'
 
+        options {
+            skipStagesAfterUnstable()
+        }
+
         stage('Build') {
-            sh 'make'
+            sh 'mvn -B -DskipTests clean package'
         }
         
         stage('Test') {
-            git '/home/Documents/Belajar_Implementasi_CICD/Jenkins/simple-java-maven-app'
-            sh 'make check'
-            junit 'reports/**/*.xml'
+            sh 'mvn test'
+            junit 'target/surefire-reports/*.xml'
         }
 
-        stage('Deploy') {
-            git '/home/Documents/Belajar_Implementasi_CICD/Jenkins/simple-java-maven-app'
-            sh 'make publish'    
+        stage('Delliver') {
+            sh './jenkins/scripts/deliver.sh'
         }    
     }
 }
