@@ -1,32 +1,19 @@
-pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.1-adoptopenjdk-11'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
-    options {
-        skipStagesAfterUnstable()
-    }
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
+node('docker') {
+    stage('Build') {
+        docker.image('maven:3.8.4-openjdk-11-slim').inside {
+            git '/home/Documents/Belajar_Implementasi_CICD/Jenkins/simple-java-maven-app'
+            options {
+                skipStagesAfterUnstable()
             }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
+            stage('Build') {
+                sh 'make'
             }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
+            stage('Test') {
+                sh 'make check'
+                junit 'reports/**/*.xml'
             }
-        }
-        stage('Deliver') { 
-            steps {
-                sh './jenkins/scripts/deliver.sh' 
+            stage('Deploy') {
+                sh 'make publish'
             }
         }
     }
