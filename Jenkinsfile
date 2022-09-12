@@ -1,5 +1,5 @@
 node() {
-    docker.image('maven:3.8.4-openjdk-11-slim').inside {
+    docker.image('maven:3.8.1-adoptopenjdk-11').inside {
         stage('Build') {
             git '/home/Documents/Belajar_Implementasi_CICD/Jenkins/simple-java-maven-app'
             sh 'make'
