@@ -9,10 +9,12 @@ node() {
         stage('Test') {
             sh 'mvn test'
             junit 'target/surefire-reports/*.xml'
+            input message: 'Lanjut tahap deploy? (klik "Procced" untuk lanjut ke tahap Deploy)'
         }
 
         stage('Delliver') {
             sh './jenkins/scripts/deliver.sh'
+            input message: 'Sudah selesai? (klik "Procced" untuk lanjut ke tahap Deploy)'
         }    
     }
 }
