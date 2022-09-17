@@ -14,7 +14,7 @@ node() {
 
         stage('Delliver') {
             sh './jenkins/scripts/deliver.sh'
-            input message: 'Sudah selesai? (klik "Procced" untuk lanjut ke tahap Deploy)'
+            input message: 'Sudah selesai? (klik "Procced" untuk memberhentikan)'
         }    
     }
 }
