@@ -1,7 +1,7 @@
 node() {
     docker.image('maven:3.8.1-adoptopenjdk-11').inside('-v /root/.m2:/root/.m2') {
-        git '/home/Documents/Belajar_Implementasi_CICD/Jenkins/simple-java-maven-app'
-        
+        checkout scm
+                
         stage('Build') {
             sh 'mvn -B -DskipTests clean package'
         }
