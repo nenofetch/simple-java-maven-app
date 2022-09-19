@@ -9,6 +9,9 @@ node() {
         stage('Test') {
             sh 'mvn test'
             junit 'target/surefire-reports/*.xml'
+        }
+
+        stage('Manual Approval') {
             input message: 'Lanjut tahap deploy? (klik "Procced" untuk lanjut ke tahap Deploy)'
         }
 
